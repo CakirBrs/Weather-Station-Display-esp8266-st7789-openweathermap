@@ -22,6 +22,11 @@ TFT_eSprite sprite = TFT_eSprite(&tft);
 TFT_eSprite sprite2 = TFT_eSprite(&tft);
 TFT_eSprite sprite3 = TFT_eSprite(&tft);
 TFT_eSprite barSprite = TFT_eSprite(&tft);
+TFT_eSprite bigTextTest16shorts = TFT_eSprite(&tft);
+TFT_eSprite bigTextTest16s = TFT_eSprite(&tft);
+TFT_eSprite bigTextTest12s = TFT_eSprite(&tft);
+TFT_eSprite descrption = TFT_eSprite(&tft);
+
 
 const char* ssid = "Wifi ID"; 
 const char* password = "Wifi Password"; 
@@ -174,18 +179,18 @@ void loop() {
     if (!tempMax.equals(tempMaxold))
     {
       tempMaxold=tempMax;
-      bigTextTest16short(tempMax, 100, 40);
+      bigTextTest16short(tempMax+"°C", 80, 40);
     }
 
     if (!tempMin.equals(tempMinold))
     {
-      bigTextTest16short(tempMin, 100, 55);
+      bigTextTest16short(tempMin+"°C", 80, 55);
       tempMinold=tempMin;
     }
     if (!tmpp.equals(tmppold))
     {
       tmppold=tmpp;
-      bigTextTest48(tmpp, 10, 75);
+      bigTextTest48(tmpp+"°C", 10, 75);
     }
 
     if (!tmpp2.equals(tmpp2old)){
@@ -209,27 +214,33 @@ void loop() {
 
       day_of_weekold=day_of_week;
       String dow;
-      if(day_of_week==1){
-        dow="Pazartesi";
+      
+      switch(day_of_week){
+        case 0:
+          dow="Pazar";
+          break;
+        case 1:
+          dow="Pazartesi";
+          break;
+        case 2:
+          dow="Sali";
+          break;
+        case 3:
+          dow="Carsamba";
+          break;
+        case 4:
+          dow="Persembe";
+          break;
+        case 5:
+          dow="Cuma";
+          break;
+        case 6:
+          dow="Cumartesi";
+          break;
+        default:
+          dow="ERROR!";
       }
-      else if(day_of_week==2){
-        dow="Sali";
-      }
-      else if(day_of_week==3){
-        dow="Carsamba";
-      }
-      else if(day_of_week==4){
-        dow="Persembe";
-      }
-      else if(day_of_week==5){
-        dow="Cuma";
-      }
-      else if(day_of_week==6){
-        dow="Cumartes";
-      }
-      else if(day_of_week==7){
-        dow="Pazar";
-      }
+
       bigTextTest16(dow, 10, 145);
     }
     delay(10000);
@@ -272,46 +283,53 @@ void weatherImage(int x, int y,int id,String s){
   sprite.fillSprite(TFT_BLACK);
   sprite2.fillSprite(TFT_BLACK);
   sprite.setSwapBytes(true);
-  if(id==800){//use switch case and add other images
-    sprite.pushImage(0,0,100,100,i01d);//i01d
-    
-  }
-  else if(id==801){//burda switch case kullan
-    sprite.pushImage(0,0,100,100,i02d);//i02d
-    
-  }
-  else if(id==802){//burda switch case kullan
-    sprite.pushImage(0,0,100,100,i03d);//i02d
-    
-  }
-  else if(id==803 || id==804){//burda switch case kullan
-    sprite.pushImage(0,0,100,100,i04n2x);//i02d
-    
+  
+  
+  switch(id){
+    case 800:
+      sprite.pushImage(0,0,100,100,i01d);//i01d
+      break;
+    case 801:
+      sprite.pushImage(0,0,100,100,i02d);//i02d
+      break;
+    case 802:
+      sprite.pushImage(0,0,100,100,i03d);//i02d
+      break;
+    case 803:
+      sprite.pushImage(0,0,100,100,i04n2x);//i02d
+      break;
   }
 
-  sprite.pushSprite(x,y,TFT_BLACK); 
-  sprite.pushToSprite(&sprite2, 0, 0,TFT_BLACK);
+  sprite.pushSprite(x,y); //,TFT_BLACK
+  sprite.pushToSprite(&sprite2, 0, 0);//,TFT_BLACK
   sprite2.pushSprite(x,y);
   sprite2.deleteSprite();
-  sprite.fillSprite(TFT_BLACK);
-  sprite.loadFont(gothicFont24);
-  sprite.fillRoundRect(  0, 0,  100, 30, 10, TFT_WHITE);
-  sprite.setTextColor(TFT_BLACK, TFT_WHITE);
+  sprite.deleteSprite();
+
+  descrption.createSprite(100,50);
+  descrption.fillSprite(TFT_BLACK);
+  descrption.loadFont(gothicFont24);
+  descrption.fillRoundRect(  0, 0,  100, 30, 10, TFT_WHITE);
+  descrption.setTextColor(TFT_BLACK, TFT_WHITE);
   String hava;
   if(id==800){
     hava="Clear";
   }else{
     hava="Clouds";
   }
-  sprite.drawString(hava,10,5);
-  sprite.pushSprite(x,y+80);
-  sprite.fillSprite(TFT_BLACK);
-  sprite.setTextColor(TFT_WHITE, TFT_BLACK);
-  sprite.unloadFont();
-  sprite.loadFont(gothicFont16);
-  sprite.drawString(s,10,5);
-  sprite.pushSprite(x,y+110);
-  sprite.deleteSprite();
+  descrption.setTextDatum(MC_DATUM);
+  descrption.drawString(hava,50,15);
+  descrption.pushSprite(x,y+80);
+  descrption.fillSprite(TFT_BLACK);
+  descrption.setTextColor(TFT_WHITE, TFT_BLACK);
+  descrption.unloadFont();
+  descrption.deleteSprite();
+  descrption.createSprite(100,50);
+  descrption.loadFont(gothicFont16);
+  descrption.setTextDatum(MC_DATUM);
+  descrption.drawString(s,50,15);
+  descrption.pushSprite(x,y+110);
+  descrption.deleteSprite();
 }
 
 
@@ -371,44 +389,44 @@ void bigTextTest48(String s, int x, int y){
 
 void bigTextTest12(String s, int x, int y){
   
-  sprite.createSprite(100,20);
-  sprite.fillSprite(TFT_BLACK);
-  sprite.loadFont(gothicFont12);
-  sprite.setTextColor(TFT_WHITE, TFT_BLACK);
-  sprite.drawString(s,0,0);
-  sprite.unloadFont();
-  sprite.pushSprite(x,y);
-  sprite.deleteSprite();
+  bigTextTest12s.createSprite(100,15);
+  bigTextTest12s.fillSprite(TFT_BLACK);
+  bigTextTest12s.loadFont(gothicFont12);
+  bigTextTest12s.setTextColor(TFT_WHITE, TFT_BLACK);
+  bigTextTest12s.drawString(s,0,0);
+  bigTextTest12s.unloadFont();
+  bigTextTest12s.pushSprite(x,y);
+  bigTextTest12s.deleteSprite();
 }
 
 void bigTextTest16(String s, int x, int y){
   
-  sprite.createSprite(140,20);
-  sprite.fillSprite(TFT_BLACK);
-  sprite.loadFont(gothicFont16);
-  sprite.setTextColor(TFT_WHITE, TFT_BLACK);
-  sprite.drawString(s,0,0);
-  sprite.unloadFont();
-  sprite.pushSprite(x,y);
-  sprite.deleteSprite();
+  bigTextTest16s.createSprite(140,20);
+  bigTextTest16s.fillSprite(TFT_BLACK);
+  bigTextTest16s.loadFont(gothicFont16);
+  bigTextTest16s.setTextColor(TFT_WHITE, TFT_BLACK);
+  bigTextTest16s.drawString(s,0,0);
+  bigTextTest16s.unloadFont();
+  bigTextTest16s.pushSprite(x,y);
+  bigTextTest16s.deleteSprite();
 }
 
 void bigTextTest16short(String s, int x, int y){
   
-  sprite.createSprite(40,20);
-  sprite.fillSprite(TFT_BLACK);
-  sprite.loadFont(gothicFont16);
-  sprite.setTextColor(TFT_WHITE, TFT_BLACK);
-  sprite.drawString(s,0,0);
-  sprite.unloadFont();
-  sprite.pushSprite(x,y);
-  sprite.deleteSprite();
+  bigTextTest16shorts.createSprite(60,15);
+  bigTextTest16shorts.fillSprite(TFT_BLACK);
+  bigTextTest16shorts.loadFont(gothicFont16);
+  bigTextTest16shorts.setTextColor(TFT_WHITE, TFT_BLACK);
+  bigTextTest16shorts.drawString(s,0,0);
+  bigTextTest16shorts.unloadFont();
+  bigTextTest16shorts.pushSprite(x,y);
+  bigTextTest16shorts.deleteSprite();
 }
 
 void printTemplate(){
   bigTextTest24(city, 10, 15);
-  bigTextTest16("Max Temp:", 10, 40); 
-  bigTextTest16("Min Temp:", 10, 55); 
+  bigTextTest12("Max Temp:", 10, 40); 
+  bigTextTest12("Min Temp:", 10, 55); 
   tempImage(10, 170); 
   humidImage(10, 200); 
 }
