@@ -8,6 +8,11 @@
 #include "i02d.h"
 #include "i03d.h"
 #include "i04n2x.h"
+#include "i09d.h"
+#include "i10d.h"
+#include "i11d.h"
+#include "i13d.h"
+#include "i50d.h"
 #include <stdlib.h>
 #include <string.h>
 #include "thermoM25x25.h"
@@ -284,7 +289,6 @@ void weatherImage(int x, int y,int id,String s){
   sprite2.fillSprite(TFT_BLACK);
   sprite.setSwapBytes(true);
   
-  
   switch(id){
     case 800:
       sprite.pushImage(0,0,100,100,i01d);//i01d
@@ -298,6 +302,61 @@ void weatherImage(int x, int y,int id,String s){
     case 803:
       sprite.pushImage(0,0,100,100,i04n2x);//i02d
       break;
+    case 804:
+      sprite.pushImage(0,0,100,100,i04n2x);//i02d
+      break;
+    case 520:
+    case 521:
+    case 522:
+    case 531:
+      sprite.pushImage(0,0,100,100,i09d);//i02d
+      break;
+    case 500:
+    case 501:
+    case 502:
+    case 503:
+    case 504:
+      sprite.pushImage(0,0,100,100,i10d);//i02d
+      break;
+    case 200:
+    case 201:
+    case 202:
+    case 210:
+    case 211:
+    case 212:
+    case 221:
+    case 230:
+    case 231:
+    case 232:
+      sprite.pushImage(0,0,100,100,i11d);//i02d
+      break;
+    case 511:
+    case 600:
+    case 601:
+    case 602:
+    case 611:
+    case 612:
+    case 613:
+    case 615:
+    case 616:
+    case 620:
+    case 621:
+    case 622:
+      sprite.pushImage(0,0,100,100,i13d);//i02d
+      break;
+    case 700:
+    case 711:
+    case 721:
+    case 731:
+    case 741:
+    case 751:
+    case 761:
+    case 762:
+    case 771:
+    case 781:
+      sprite.pushImage(0,0,100,100,i50d);//i02d
+      break;
+    
   }
 
   sprite.pushSprite(x,y); //,TFT_BLACK
